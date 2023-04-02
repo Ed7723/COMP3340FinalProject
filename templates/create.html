@@ -1,13 +1,40 @@
+<!-- This html page will be for creating a new inventory entry -->
 {% extends "base.html" %}
 {% block content %}
 <!-- Basic form imported from bootstrap -->
-<form>
-    <div class="mb-3">
-        <label for="itemNameLabel" class="form-label">Insert Item Name</label>
-        <input type="text" class="form-control" id="itemName" placeholder="Bananas">
+<form method = "POST" action="" novalidate>
+    <!-- Hidden tags adds CSRF token to help with form security -->
+    {{ form.hidden_tag() }}
+    <!-- This is how forms are setup using flask-wtf -->
+    <div class="form-group mb-3">
+        {{ form.itemName.label(class="form-label",text="Insert Item Name") }}
+        <!-- Form validation bootstrap to show errors -->
+        {% if form.itemName.errors %}
+            {{ form.itemName(class="form-control is-invalid",id="itemName",placeholder="Bananas") }}
+            <div class="invalid-feedback">
+                {% for error in form.itemName.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.itemName(class="form-control",id="itemName",placeholder="Bananas") }}
+        {% endif %}
     </div>
-    <div class="col-12">
-        <button class="btn btn-primary" type="submit">Submit form</button>
+    <div class="form-group mb-3">
+        {{ form.itemPrice.label(class="form-label",text="Insert Price (CAD)") }}
+        {% if form.itemPrice.errors %}
+        {{ form.itemPrice(class="form-control is-invalid",id="itemPrice",placeholder="3.3") }}
+            <div class="invalid-feedback">
+                {% for error in form.itemPrice.errors%}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.itemPrice(class="form-control",id="itemPrice",placeholder="3.3") }}
+        {% endif %}
+    </div>
+    <div class="form-group">
+        {{form.submit(class = "btn btn-primary",type="submit")}}
     </div>
 </form>
 
