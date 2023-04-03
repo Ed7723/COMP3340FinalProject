@@ -16,7 +16,12 @@
                     <td>{{ item.id }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.price }}</td>
-                    <td><a href="{{ url_for('edit', item_id=item.id) }}" class="btn btn-primary">Edit</a></td>
+                    <td>
+                      <a href="{{ url_for('edit', item_id=item.id) }}" class="btn btn-primary">Edit</a>
+                      <form method="POST" action="{{ url_for('delete', item_id=item.id) }}" style="display: inline-block;">
+                        <input type="submit" class="btn btn-danger" value="Delete">
+                      </form>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

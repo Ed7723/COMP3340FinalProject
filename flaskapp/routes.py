@@ -1,6 +1,6 @@
 from flask import render_template,flash,redirect,url_for
 from flaskapp import app,db
-from flaskapp.forms import createForm
+from flaskapp.forms import createForm, editForm
 from flaskapp.models import Item
 
 # Home route, renders home.html
@@ -28,14 +28,22 @@ def view():
     itemList = Item.query.all()
     return render_template("view.html", title = 'View Items' , items = itemList)
 
-@app.route("/edit/<int:item_id>", methods=['GET', 'POST'])
+@app.route('/edit/<int:item_id>', methods=['GET', 'POST'])
 def edit(item_id):
-    item = Item.query.get(item_id)
-    form = createForm(obj=item)
+    item = Item.query.get_or_404(item_id)
+    form = editForm(itemName=item.name, itemPrice=item.price)
     if form.validate_on_submit():
         item.name = form.itemName.data
         item.price = form.itemPrice.data
         db.session.commit()
-        flash(f'Successfully updated item: {item.name}', 'success')
+        flash(f'Item \'{form.itemName.data}\' was updated successfully', 'success')
         return redirect(url_for('view'))
-    return render_template("edit.html", title='Edit Item', form=form, item=item)
+    return render_template('edit.html', item=item, form=form)
+
+@app.route('/delete/<int:item_id>', methods=['POST'])
+def delete(item_id):
+    item = Item.query.get_or_404(item_id)
+    db.session.delete(item)
+    db.session.commit()
+    flash(f'Item \'{item.name}\' was deleted successfully', 'success')
+    return redirect(url_for('view'))

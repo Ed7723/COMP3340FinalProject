@@ -11,7 +11,16 @@
         <br>
         <div class="form-group">
             {{ form.itemPrice.label(class="form-control-label", text="Item Price") }}
-            {{ form.itemPrice(class="form-control form-control-lg", placeholder=item.price) }}
+            {% if form.itemPrice.errors %}
+                {{ form.itemPrice(class="form-control form-control-lg is-invalid", placeholder=item.price) }}
+                <div class="invalid-feedback">
+                    {% for error in form.itemPrice.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.itemPrice(class="form-control form-control-lg", placeholder=item.price) }}
+            {% endif %}
         </div>
         <br>
         <div class="form-group">
