@@ -1,5 +1,5 @@
 from flask import render_template,flash,redirect,url_for
-from flaskapp import app
+from flaskapp import app,db
 from flaskapp.forms import createForm
 from flaskapp.models import Item
 
@@ -15,11 +15,15 @@ def home():
 def create():
     form = createForm()
     if form.validate_on_submit():
+        item = Item(name = form.itemName.data, price = form.itemPrice.data)
+        db.session.add(item)
+        db.session.commit()
         flash(f'Sucessfully created new item: {form.itemName.data}','success')
         return redirect(url_for('view'))
     return render_template("create.html", title = 'Create Items',form=form)
 
-# View route, renderes view.html. Allows looking at items.
+# View route, renders view.html. Allows looking at items.
 @app.route("/view")
 def view():
-    return render_template("view.html", title = 'View Items')
+    itemList = Item.query.all()
+    return render_template("view.html", title = 'View Items' , items = itemList)
