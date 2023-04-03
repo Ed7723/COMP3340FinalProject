@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length, ValidationError
+from flaskapp.models import Item
 
 # Class inherits from base FlaskForm and creates 3 new parameters: itemName, itemPrice and a submit button 
 # itemName and itemPrice and validated so that they are required field and itemName has 40 char limit and itemPrice has 10
@@ -13,3 +14,4 @@ class createForm(FlaskForm):
         item = Item.query.filter_by(name = itemName.data).first()
         if item:
             raise ValidationError("Item already exists in the database")
+        

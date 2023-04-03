@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Edit Item</h1>
+    <form method="POST" action="{{ url_for('edit', item_id=item.id) }}">
+        {{ form.hidden_tag() }}
+        <input type="hidden" name="item_id" value="{{ item.id }}">
+        <div class="form-group">
+            {{ form.itemName.label(class="form-control-label", text="Item Name") }}
+            {{ form.itemName(class="form-control form-control-lg", placeholder=item.name) }}
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.itemPrice.label(class="form-control-label", text="Item Price") }}
+            {{ form.itemPrice(class="form-control form-control-lg", placeholder=item.price) }}
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary", value="Edit Item") }}
+        </div>
+    </form>
+{% endblock %}

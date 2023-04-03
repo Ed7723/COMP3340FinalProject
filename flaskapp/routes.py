@@ -27,3 +27,15 @@ def create():
 def view():
     itemList = Item.query.all()
     return render_template("view.html", title = 'View Items' , items = itemList)
+
+@app.route("/edit/<int:item_id>", methods=['GET', 'POST'])
+def edit(item_id):
+    item = Item.query.get(item_id)
+    form = createForm(obj=item)
+    if form.validate_on_submit():
+        item.name = form.itemName.data
+        item.price = form.itemPrice.data
+        db.session.commit()
+        flash(f'Successfully updated item: {item.name}', 'success')
+        return redirect(url_for('view'))
+    return render_template("edit.html", title='Edit Item', form=form, item=item)
