@@ -38,7 +38,7 @@ def edit(item_id):
         db.session.commit()
         flash(f'Item \'{form.itemName.data}\' was updated successfully', 'success')
         return redirect(url_for('view'))
-    return render_template('edit.html', item=item, form=form)
+    return render_template('edit.html' ,title = 'Edit Items', item=item, form=form)
 
 @app.route('/delete/<int:item_id>', methods=['POST'])
 def delete(item_id):

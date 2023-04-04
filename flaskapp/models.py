@@ -5,7 +5,7 @@ from flaskapp import db
 class Item(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     name = db.Column(db.String(40),unique = True,nullable = False)
-    price = db.Column(db.String(10),nullable = False)
+    price = db.Column(db.Float(10),nullable = False)
 
     def __repr__(self):
         return f"Item:('{self.name}, price: {self.price})"
